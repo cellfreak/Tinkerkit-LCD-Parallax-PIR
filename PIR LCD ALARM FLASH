@@ -1,0 +1,40 @@
+/**
+* PIR Alarm Code
+*/
+#include <TinkerKit.h>
+#include <Wire.h>
+#include <LiquidCrystal.h>
+#include <TKLCD.h>
+
+
+TKLCD_Local lcd = TKLCD_Local();
+
+TKAnalog infrared(A2);
+
+void setup() {
+  lcd.begin();
+  
+  lcd.clear();
+}  
+void loop() {
+
+  int PIR = infrared.read();
+
+  lcd.home();
+  lcd.print("PIR: ");
+  lcd.print(PIR);
+  lcd.setCursor(0,1);
+  
+  if(PIR < 500) {
+    lcd.setBrightness(255);
+    lcd.print("OK    ");
+  }
+  else if (PIR > 1000){
+    lcd.print("  ALARM ALARM  ");
+    lcd.setBrightness(255);
+    delay(500);
+    lcd.setBrightness(0);
+    delay(500);
+    lcd.clear();
+    }
+}
